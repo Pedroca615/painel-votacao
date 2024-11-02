@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Eletrônico do Senado</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Painel Eletrônico do Senado</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Cadastrar Senador</h2>
+            <form id="senatorForm">
+                <input type="text" id="senatorName" placeholder="Nome do Senador" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Solicitar Código do Presidente da Sessão</h2>
+            <button id="requestCodeButton">Solicitar Código</button>
+            <div id="codeDisplay"></div>
+        </section>
+
+        <section>
+            <h2>Adicionar Ordem do Dia</h2>
+            <form id="agendaForm">
+                <input type="text" id="agendaItem" placeholder="Ordem do Dia" required>
+                <button type="submit">Adicionar</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Registrar Voto</h2>
+            <form id="voteForm">
+                <input type="text" id="voterName" placeholder="Nome do Parlamentar" required>
+                <input type="text" id="vote" placeholder="Voto (Sim/Não)" required>
+                <button type="submit">Registrar Voto</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Controle de Frequência</h2>
+            <form id="attendanceForm">
+                <input type="text" id="attendeeName" placeholder="Nome do Parlamentar" required>
+                <button type="submit">Registrar Presença</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Resultados de Votação</h2>
+            <div id="resultsDisplay"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+section {
+    background: #fff;
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-top: 0;
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const senatorForm = document.getElementById('senatorForm');
+    const agendaForm = document.getElementById('agendaForm');
+    const voteForm = document.getElementById('voteForm');
+    const attendanceForm = document.getElementById('attendanceForm');
+    const codeDisplay = document.getElementById('codeDisplay');
+    const resultsDisplay = document.getElementById('resultsDisplay');
+
+    let senators = [];
+    let agenda = [];
+    let votes = [];
+    let attendance = [];
+    let sessionCode = Math.random().toString(36).substr(2, 5).toUpperCase();
+
+    senatorForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const senatorName = document.getElementById('senatorName').value;
+        senators.push(senatorName);
+        alert(`${senatorName} cadastrado com sucesso!`);
+        senatorForm.reset();
+    });
+
+    document.getElementById('requestCodeButton').addEventListener('click', () => {
+        codeDisplay.innerText = `Código da Sessão: ${sessionCode}`;
+    });
+
+    agendaForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const agendaItem = document.getElementById('agendaItem').value;
+        agenda.push(agendaItem);
+        alert(`Ordem do Dia '${agendaItem}' adicionada com sucesso!`);
+        agendaForm.reset();
+    });
+
+    voteForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const voterName = document.getElementById('voterName').value;
+        const vote = document.getElementById('vote').value;
+        votes.push({ voterName, vote });
+        resultsDisplay.innerHTML += `<p>${voterName} votou: ${vote}</p>`;
+        voteForm.reset();
+    });
+
+    attendanceForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const attendeeName = document.getElementById('attendeeName').value;
+        attendance.push(attendeeName);
+        alert(`${attendeeName} registrado como presente!`);
+        attendanceForm.reset();
+    });
+});
